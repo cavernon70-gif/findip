@@ -1,0 +1,15 @@
+---
+- name: finding ip address play
+  hosts: localhost
+  vars_files:
+     check.yml
+  tasks:
+    - name: directory creation
+      file:
+        path: /home/student/ipaddress
+        state: directory
+    - name: finding ip
+      copy:
+        content: "IPADDR = {{ lookup('file',item)|regex_findall('\\b(?:[0-9]{1,3}\\.){3}[0-9]{1,3}\\b')|unique|join(',')|default('None',true) }}"
+        dest: "/home/student/ipaddress/{{ item }}"
+      loop: "{{ files }}"
