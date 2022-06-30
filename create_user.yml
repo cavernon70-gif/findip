@@ -1,0 +1,17 @@
+---
+- name: usercreation playbook
+  hosts: dev
+  vars_files:
+    user_list.yml
+  tasks:
+    - name: user creation
+      vars:
+        password: "{{lookup('password',item.name +' length=6 chars=digits') }}}"    
+      user:
+        name: "{{ item.name }}"
+        uid: "{{ item.uid }}"
+        password: "{{ password | password_hash('sha512') }}"
+        update_password: on_create
+        comment: "{{item.first|capitalize}} {{item.middle|capitalize}} {{item.last|capitalize}}"
+        state: present
+      loop: "{{ users }}"    
