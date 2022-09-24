@@ -1,5 +1,24 @@
 ---
- - files:
-    - ipaddress.txt
-    - dest.txt
-    - config.yml
+- name: checksum play
+  hosts: localhost
+  vars_files:
+     verfy.yml
+  gather_facts: no   
+  tasks:
+    - name: gather info
+      stat:
+        path: "{{ item.name }}"
+      loop: "{{ files }}"
+      register: res
+    - debug:
+          msg: "Checksum Pass {{ item.stat.path }}"
+      when: item.stat.checksum == item.item.checksum.split()[0]    
+      loop: "{{ res.results }}"
+      loop_control:
+               label: "{{ item.stat['path'] }}"   
+    - debug:
+          msg: "Checksum Fail {{ item.stat.path }}"
+      when: item.stat.checksum != item.item.checksum.split()[0]
+      loop: "{{ res.results }}"
+      loop_control:
+              label: "{{ item.stat.path }}" 

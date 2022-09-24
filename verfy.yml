@@ -1,0 +1,6 @@
+---
+ - files:
+     - name: /home/student/example.yml
+       checksum: 89b1ff3ee47e53f6c6a187bd7fbe8c1d999dc330  /tmp/example.yml
+     - name: /home/student/example1.yml
+       checksum: 96161714d0ab5d3faf475a20fa36c622d72df4c8  /tmp/example1.yml

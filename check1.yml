@@ -1,0 +1,27 @@
+---
+- name: checksum play
+  hosts: localhost
+  vars_files:
+    - verify.yml
+  tasks:
+    - name: gathering info
+      stat:
+        path: "{{ item.name }}"
+      loop: "{{ files }}"
+      register: res
+    - name: checksum  pass
+      debug:
+         msg: "Checkum Pass{{ item.stat.path }}"
+      when: item.stat.checksum == item.item.checksum.split()[0]
+      loop: "{{ res.results }}"
+      loop_control:
+              label:  "{{ item.stat.path }}"
+    - name: checksum  pass
+      debug:
+         msg: "Checkum Fail{{ item.stat.path }}"
+      when: item.stat.checksum != item.item.checksum.split()[0]
+      loop: "{{ res.results }}"
+      loop_control:
+              label:  "{{ item.stat.path }}"
+
+            

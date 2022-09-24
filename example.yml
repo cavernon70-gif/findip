@@ -1,0 +1,10 @@
+---
+- name: filters verification play
+  hosts: localhost
+  gather_facts: no 
+  vars:
+    x: antony
+  tasks:
+     - name: captialize
+       debug:
+          msg: "{{ x | lower }}"
